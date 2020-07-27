@@ -8,7 +8,7 @@
         "standard-with-typescript",
         "plugin:react/recommended"
     ],
-    "plugin": [
+    "plugins": [
         "react"
     ],
     "parserOptions": {

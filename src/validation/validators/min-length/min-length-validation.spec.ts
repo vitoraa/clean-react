@@ -7,7 +7,13 @@ const makeSut = (): MinLengthValidation => new MinLengthValidation(faker.databas
 describe('Min Length Validation', () => {
   test('Should return error if length is invalid', () => {
     const sut = makeSut()
-    const error = sut.validate('faker.random.word()')
+    const error = sut.validate('12')
     expect(error).toEqual(new MinLengthFieldError())
+  })
+
+  test('Should return falsy if length is valid', () => {
+    const sut = makeSut()
+    const error = sut.validate('123456')
+    expect(error).toBeFalsy()
   })
 })

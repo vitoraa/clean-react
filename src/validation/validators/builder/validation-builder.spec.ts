@@ -6,18 +6,31 @@ import faker from 'faker'
 
 describe('ValidationBuilder', () => {
   test('Should return RequiredFieldValidation', () => {
-    const validations = sut.field('any_field').required().build()
-    expect(validations).toEqual([new RequiredFieldValidation('any_field')])
+    const field = faker.database.column()
+    const validations = sut.field(field).required().build()
+    expect(validations).toEqual([new RequiredFieldValidation(field)])
   })
 
   test('Should return EmailValidation', () => {
-    const validations = sut.field('any_field').email().build()
-    expect(validations).toEqual([new EmailValidation('any_field')])
+    const field = faker.database.column()
+    const validations = sut.field(field).email().build()
+    expect(validations).toEqual([new EmailValidation(field)])
   })
 
   test('Should return MinLengthValidation', () => {
+    const field = faker.database.column()
     const minLength = faker.random.number()
-    const validations = sut.field('any_field').min(minLength).build()
-    expect(validations).toEqual([new MinLengthValidation('any_field', minLength)])
+    const validations = sut.field(field).min(minLength).build()
+    expect(validations).toEqual([new MinLengthValidation(field, minLength)])
+  })
+
+  test('Should return a list of validation', () => {
+    const field = faker.database.column()
+    const minLength = faker.random.number()
+    const validations = sut.field(field).min(minLength).email().required().build()
+    expect(validations).toEqual([
+      new MinLengthValidation(field, minLength),
+      new EmailValidation(field),
+      new RequiredFieldValidation(field)])
   })
 })

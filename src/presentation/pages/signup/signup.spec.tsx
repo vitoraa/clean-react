@@ -121,4 +121,11 @@ describe('SignUp component', () => {
     await simulateValidSubmit(sut, name, email, password, passwordConfirmation)
     expect(addAccountSpy.params).toEqual({ name, email, password, passwordConfirmation })
   })
+
+  test('Should call AddAccount only once', async () => {
+    const { sut, addAccountSpy } = makeSut()
+    await simulateValidSubmit(sut)
+    await simulateValidSubmit(sut)
+    expect(addAccountSpy.callsCount).toBe(1)
+  })
 })

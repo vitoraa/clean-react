@@ -1,11 +1,12 @@
 import React from 'react'
 import SignUp from './signup'
-import { Helper, ValidationStub } from '@/presentation/test'
+import { Helper, ValidationStub, AddAccountSpy } from '@/presentation/test'
 import { RenderResult, render, fireEvent, waitFor } from '@testing-library/react'
 import faker from 'faker'
 
 type SutTypes = {
   sut: RenderResult
+  addAccountSpy: AddAccountSpy
 }
 
 type SutParams = {
@@ -15,10 +16,11 @@ type SutParams = {
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   validationStub.errorMessage = params?.validationError
+  const addAccountSpy = new AddAccountSpy()
   const sut = render(
-    <SignUp validation={validationStub} />
+    <SignUp validation={validationStub} addAccount={addAccountSpy} />
   )
-  return { sut }
+  return { sut, addAccountSpy }
 }
 
 const simulateValidSubmit = async (sut: RenderResult, name = faker.name.findName(), email = faker.internet.email(), password = faker.internet.password(), passwordConfirmation = faker.internet.password()): Promise<void> => {
@@ -108,5 +110,15 @@ describe('SignUp component', () => {
     const { sut } = makeSut()
     await simulateValidSubmit(sut)
     Helper.testElementsExists(sut, 'spinner')
+  })
+
+  test('Should call AddAccount with correct values', async () => {
+    const { sut, addAccountSpy } = makeSut()
+    const password = faker.internet.password()
+    const email = faker.internet.email()
+    const name = faker.name.findName()
+    const passwordConfirmation = faker.internet.password()
+    await simulateValidSubmit(sut, name, email, password, passwordConfirmation)
+    expect(addAccountSpy.params).toEqual({ name, email, password, passwordConfirmation })
   })
 })

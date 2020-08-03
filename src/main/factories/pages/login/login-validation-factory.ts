@@ -1,10 +1,10 @@
-import { ValidationBuilder } from '@/validation/validators/builder/validation-builder'
+import { ValidationBuilder as Builder } from '@/validation/validators/builder/validation-builder'
 import { ValidationComposite } from '@/validation/validators'
 
 export const makeLoginValidation = (): ValidationComposite => {
   const validationComposite = ValidationComposite.build([
-    ...ValidationBuilder.field('email').required().email().build(),
-    ...ValidationBuilder.field('password').required().min(5).build()
+    ...Builder.field('email').required().email().build(),
+    ...Builder.field('password').required().min(5).build()
   ])
   return validationComposite
 }

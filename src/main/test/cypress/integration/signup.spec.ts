@@ -30,4 +30,17 @@ describe('Signup', () => {
     Helper.testInputStatus('passwordConfirmation', 'Campo inválido')
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
+
+  it('Should present valid state if form is valid', () => {
+    cy.getByTestId('name').focus().type(faker.name.findName())
+    Helper.testInputStatus('name')
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    Helper.testInputStatus('email')
+    const password = faker.random.alphaNumeric(5)
+    cy.getByTestId('password').focus().type(password)
+    Helper.testInputStatus('password')
+    cy.getByTestId('passwordConfirmation').focus().type(password)
+    Helper.testInputStatus('passwordConfirmation')
+    cy.getByTestId('error-wrap').should('not.have.descendants')
+  })
 })

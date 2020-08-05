@@ -24,4 +24,12 @@ describe('Input Component', () => {
     fireEvent.focus(input)
     expect(input.readOnly).toBe(false)
   })
+
+  test('Should focus input on label click', () => {
+    const { getByTestId } = makeSut()
+    const input = getByTestId('field')
+    const label = getByTestId('field-label')
+    fireEvent.click(label)
+    expect(document.activeElement).toBe(input)
+  })
 })

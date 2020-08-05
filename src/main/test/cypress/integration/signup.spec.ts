@@ -60,4 +60,11 @@ describe('Signup', () => {
     Helper.testMainError('Esse email já está em uso.')
     Helper.testUrl('/signup')
   })
+
+  it('Should present unexpectedError if invalid data is returned', () => {
+    Http.mockInvalidData()
+    simulateValidSubmit()
+    Helper.testMainError('Algo de errado aconteceu. Tente novamente em breve.')
+    Helper.testUrl('/signup')
+  })
 })

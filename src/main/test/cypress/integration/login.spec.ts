@@ -62,7 +62,7 @@ describe('Login', () => {
     cy.getByTestId('main-error').should('not.exist')
     cy.getByTestId('spinner').should('not.exist')
     Helper.testUrl('/')
-    Helper.testLocalStorageItem('accessToken')
+    Helper.testLocalStorageItem('account')
   })
 
   it('Should present unexpectedError if invalid date is returned', () => {

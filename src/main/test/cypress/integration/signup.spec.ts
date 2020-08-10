@@ -8,7 +8,6 @@ const populateFields = (): void => {
   const password = faker.random.alphaNumeric(5)
   cy.getByTestId('password').focus().type(password)
   cy.getByTestId('passwordConfirmation').focus().type(password)
-  cy.getByTestId('submit').click()
 }
 
 const simulateValidSubmit = (): void => {
@@ -78,7 +77,7 @@ describe('Signup', () => {
     simulateValidSubmit()
     cy.getByTestId('error-wrap').should('not.have.descendants')
     Helper.testUrl('/')
-    Helper.testLocalStorageItem('accessToken')
+    Helper.testLocalStorageItem('account')
   })
 
   it('Should prevent multiple submits', () => {

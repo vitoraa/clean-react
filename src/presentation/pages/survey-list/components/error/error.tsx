@@ -12,7 +12,7 @@ const Error: React.FC = () => {
   return (
     <div className={Styles.errorWrap}>
       <span data-testid="error">{state.error}</span>
-      <button data-testid="reload" onClick={reload}>Recarregar</button>
+      <button data-testid="reload" onClick={reload}>Tente Novamente</button>
     </div>
   )
 }

@@ -8,7 +8,7 @@ import faker from 'faker'
 import { EmailInUseError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/context'
 import { AddAccount } from '@/domain/usecases'
-import { AddAccountSpy } from '@/domain/test'
+import { AddAccountSpy, mockAccountModel } from '@/domain/test'
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
@@ -27,7 +27,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const addAccountSpy = new AddAccountSpy()
   const setCurrentAccountMock = jest.fn()
   render(
-    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router history={history}>
         <SignUp validation={validationStub} addAccount={addAccountSpy} />
       </Router>
@@ -166,7 +166,7 @@ describe('SignUp component', () => {
     expect(history.location.pathname).toBe('/')
   })
 
-  test('Should go to login page', () => {
+  test.only('Should go to login page', () => {
     makeSut()
     const loginLink = screen.getByTestId('login-link')
     fireEvent.click(loginLink)

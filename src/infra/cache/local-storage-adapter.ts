@@ -1,8 +1,12 @@
-import { SetStorage } from '@/data/protocols/cache/set-storage'
+import { GetStorage, SetStorage } from '@/data/protocols/cache'
 
-export class LocalStorageAdapter implements SetStorage {
+export class LocalStorageAdapter implements SetStorage, GetStorage {
   set (key: string, value: object): void {
-    localStorage.setItem(key, JSON.stringify(value))
+    if (value) {
+      localStorage.setItem(key, JSON.stringify(value))
+    } else {
+      localStorage.removeItem(key)
+    }
   }
 
   get (key: string): any {

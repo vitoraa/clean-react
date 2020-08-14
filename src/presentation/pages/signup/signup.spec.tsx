@@ -8,7 +8,7 @@ import faker from 'faker'
 import { EmailInUseError } from '@/domain/errors'
 import { ApiContext } from '@/presentation/context'
 import { AddAccount } from '@/domain/usecases'
-import { AddAccountSpy, mockAccountModel } from '@/domain/test'
+import { AddAccountSpy } from '@/domain/test'
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy
@@ -27,7 +27,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const addAccountSpy = new AddAccountSpy()
   const setCurrentAccountMock = jest.fn()
   render(
-    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
       <Router history={history}>
         <SignUp validation={validationStub} addAccount={addAccountSpy} />
       </Router>

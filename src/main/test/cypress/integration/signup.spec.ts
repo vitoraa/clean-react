@@ -1,4 +1,5 @@
-import * as Helper from '../support/form-helper'
+import * as FormHelper from '../support/form-helper'
+import * as Helper from '../support/helpers'
 import * as Http from '../support/signup-mocks'
 import faker from 'faker'
 
@@ -22,53 +23,46 @@ describe('Signup', () => {
 
   it('Should load with correct initial state', () => {
     cy.getByTestId('name').should('have.attr', 'readOnly')
-    Helper.testInputStatus('name', 'Campo obrigatório')
+    FormHelper.testInputStatus('name', 'Campo obrigatório')
     cy.getByTestId('email').should('have.attr', 'readOnly')
-    Helper.testInputStatus('email', 'Campo obrigatório')
+    FormHelper.testInputStatus('email', 'Campo obrigatório')
     cy.getByTestId('password').should('have.attr', 'readOnly')
-    Helper.testInputStatus('password', 'Campo obrigatório')
+    FormHelper.testInputStatus('password', 'Campo obrigatório')
     cy.getByTestId('passwordConfirmation').should('have.attr', 'readOnly')
-    Helper.testInputStatus('passwordConfirmation', 'Campo obrigatório')
+    FormHelper.testInputStatus('passwordConfirmation', 'Campo obrigatório')
     cy.getByTestId('submit').should('have.attr', 'disabled')
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
   it('Should present error state if form is invalid', () => {
     cy.getByTestId('name').focus().type(faker.random.alphaNumeric(3))
-    Helper.testInputStatus('name', 'Campo inválido')
+    FormHelper.testInputStatus('name', 'Campo inválido')
     cy.getByTestId('email').focus().type(faker.random.words())
-    Helper.testInputStatus('email', 'Campo inválido')
+    FormHelper.testInputStatus('email', 'Campo inválido')
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(3))
-    Helper.testInputStatus('password', 'Campo inválido')
+    FormHelper.testInputStatus('password', 'Campo inválido')
     cy.getByTestId('passwordConfirmation').focus().type(faker.random.alphaNumeric(3))
-    Helper.testInputStatus('passwordConfirmation', 'Campo inválido')
+    FormHelper.testInputStatus('passwordConfirmation', 'Campo inválido')
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
   it('Should present valid state if form is valid', () => {
     cy.getByTestId('name').focus().type(faker.random.alphaNumeric(5))
-    Helper.testInputStatus('name')
+    FormHelper.testInputStatus('name')
     cy.getByTestId('email').focus().type(faker.internet.email())
-    Helper.testInputStatus('email')
+    FormHelper.testInputStatus('email')
     const password = faker.random.alphaNumeric(5)
     cy.getByTestId('password').focus().type(password)
-    Helper.testInputStatus('password')
+    FormHelper.testInputStatus('password')
     cy.getByTestId('passwordConfirmation').focus().type(password)
-    Helper.testInputStatus('passwordConfirmation')
+    FormHelper.testInputStatus('passwordConfirmation')
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
   it('Should present EmailInUseError on 403', () => {
     Http.mockEmailInUseError()
     simulateValidSubmit()
-    Helper.testMainError('Esse email já está em uso.')
-    Helper.testUrl('/signup')
-  })
-
-  it('Should present unexpectedError if invalid data is returned', () => {
-    Http.mockInvalidData()
-    simulateValidSubmit()
-    Helper.testMainError('Algo de errado aconteceu. Tente novamente em breve.')
+    FormHelper.testMainError('Esse email já está em uso.')
     Helper.testUrl('/signup')
   })
 

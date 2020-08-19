@@ -76,6 +76,7 @@ describe('Login', () => {
     cy.getByTestId('email').focus().type(faker.internet.email())
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
     cy.getByTestId('submit').dblclick()
+    cy.wait('@request')
     Helper.testHttpCallsCount(1)
   })
 

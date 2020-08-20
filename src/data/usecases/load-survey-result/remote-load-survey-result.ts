@@ -1,5 +1,5 @@
 import { HttpGetClient, HttpStatusCode } from '@/data/protocols/http'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 
 export class RemoteLoadSurveyResult {
   constructor (
@@ -12,7 +12,7 @@ export class RemoteLoadSurveyResult {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok: return null
       case HttpStatusCode.forbiden: throw new AccessDeniedError()
-      default: return null
+      default: throw new UnexpectedError()
     }
   }
 }

@@ -6,11 +6,13 @@ export namespace LoadSurveyResult {
   export type Model = {
     question: string
     date: Date
-    answers: [{
-      image?: string
-      answer: string
-      count: number
-      percent: number
-    }]
+    answers: Answer[]
+  }
+
+  export type Answer = {
+    image?: string
+    answer: string
+    count: number
+    percent: number
   }
 }

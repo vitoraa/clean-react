@@ -1,9 +1,9 @@
 import React from 'react'
 import Styles from './answer-styles.scss'
-import { LoadSurveyResult } from '@/domain/usecases'
+import { Answer } from '@/domain/models'
 
 type Props = {
-  answer: LoadSurveyResult.Answer
+  answer: Answer
 }
 
 const Answer: React.FC<Props> = ({ answer }: Props) => {

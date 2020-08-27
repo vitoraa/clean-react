@@ -2,6 +2,7 @@ import faker from 'faker'
 import { HttpClientSpy, mockRemoteSurveyResultModel } from '@/data/test'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { RemoteSaveSurveyResult } from '@/data/usecases'
+import { mockSaveSurveyResultParams } from '@/domain/test'
 
 type SutTypes = {
   sut: RemoteSaveSurveyResult
@@ -25,8 +26,8 @@ describe('RemoteLoadSurveyResult', () => {
       statusCode: HttpStatusCode.ok,
       body: mockRemoteSurveyResultModel()
     }
-    const answer = faker.random.word()
-    await sut.save({ answer })
+    const answer = mockSaveSurveyResultParams()
+    await sut.save(answer)
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('put')
     expect(httpClientSpy.body).toBe(answer)

@@ -3,12 +3,17 @@ import Styles from './survey-result-styles.scss'
 import { Header, Footer, Loading, Calendar, Error } from '@/presentation/components'
 import FlipMove from 'react-flip-move'
 import { LoadSurveyResult } from '@/domain/usecases'
+import { useErrorHandler } from '@/presentation/hooks'
 
 type Props = {
   loadSurveyResult: LoadSurveyResult
 }
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState(old => ({ ...state, surveyResult: null, error: error.message }))
+  })
+
   const [state, setState] = useState({
     isLoading: false,
     error: '',
@@ -18,6 +23,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
   useEffect(() => {
     loadSurveyResult.load()
       .then(surveyResult => setState(old => ({ ...old, surveyResult })))
+      .catch(handleError)
   }, [])
 
   return (
@@ -43,8 +49,9 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
           </>
         }
         {state.isLoading && <Loading />}
-        {state.isLoading && <Error error={state.error} reload={() => { }} />}
+        {state.error && <Error error={state.error} reload={() => { }} />}
       </div>
+
       <Footer />
     </div>
   )

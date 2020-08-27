@@ -3,7 +3,8 @@ import * as Http from '../utils/http-mocks'
 
 const path = /surveys/
 const mockUnexpectedError = (): void => Http.mockServerError(path, 'GET')
-const mockSuccess = (): void => Http.mockOk(path, 'GET', 'fx:survey-list')
+const mockSuccess = (): void => Http.mockOk(path, 'GET', 'fx:survey-result')
+const mockAccessDeniedError = (): void => Http.mockForbiddenError(path, 'GET')
 
 describe('SurveyResult', () => {
   beforeEach(() => {
@@ -20,10 +21,16 @@ describe('SurveyResult', () => {
 
   it('Should reload on button click', () => {
     mockUnexpectedError()
-    cy.visit('')
+    cy.visit('/surveys/any_id')
     cy.getByTestId('error').should('contain.text', 'Algo de errado aconteceu. Tente novamente em breve.')
     mockSuccess()
     cy.getByTestId('reload').click()
-    cy.get('li:not(:empty)').should('have.length', 2)
+    cy.getByTestId('question').should('exist')
+  })
+
+  it('Should logout on AccessDeniedError', () => {
+    mockAccessDeniedError()
+    cy.visit('/surveys/any_id')
+    Helper.testUrl('/login')
   })
 })

@@ -166,7 +166,7 @@ describe('SignUp component', () => {
     expect(history.location.pathname).toBe('/')
   })
 
-  test.only('Should go to login page', () => {
+  test('Should go to login page', () => {
     makeSut()
     const loginLink = screen.getByTestId('login-link')
     fireEvent.click(loginLink)

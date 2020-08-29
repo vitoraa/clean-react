@@ -140,6 +140,7 @@ describe('Survey Result Component', () => {
     expect(saveSurveyResultSpy.params).toEqual({
       answer: loadSurveyResultSpy.surveyResult.answers[1].answer
     })
+    await waitFor(() => screen.getByTestId('survey-result'))
   })
 
   test('Should render Error on UnexpectedError', async () => {
@@ -197,5 +198,6 @@ describe('Survey Result Component', () => {
     expect(percents[0]).toHaveTextContent(`${surveyResult.answers[0].percent}%`)
     expect(percents[1]).toHaveTextContent(`${surveyResult.answers[1].percent}%`)
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+    await waitFor(() => screen.getByTestId('survey-result'))
   })
 })
